@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
     Rigidbody rb;
-    private int HP = 3;
-    public int startHP;
+    public int Hp { get; set; }
+    public int startHp;
+    public GameObject Bullet;
     public Camera mainCamera;
     public Vector3 mousePosition;
     float changeAmountAxisY;
@@ -15,6 +16,9 @@ public class Player : MonoBehaviour {
     float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0;
     RaycastHit hit;
     bool isJump,isKnockBack;
+    Vector3 moveDirection;
+    bool front,back,right,left,up;
+    int straight, side;
     public bool isInvincible;
     float movePower;
     public Image damegeFlash;
@@ -25,7 +29,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        HP = startHP;
+        Hp = startHp;
         rb = GetComponent<Rigidbody>();
         soundEffect = GetComponent<AudioSource>();
         movePower = 3;
@@ -34,21 +38,30 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
-        
+        if (Input.GetMouseButtonDown(0)) {
+            Shot();
+        }
+        MoveInput();
     }
 
     void FixedUpdate() {
         Move();
         lookAround();
-        if (Input.GetMouseButtonDown(0)) {
-            Shot();
-        }
+
+        //無敵時間
         if (isInvincible) {
             invincibleCoolTime += Time.fixedDeltaTime;
             damegeFlash.color = new Color(damegeFlash.color.r, damegeFlash.color.g, damegeFlash.color.b, 1 - invincibleCoolTime);
             if (invincibleCoolTime >= 5.0f) {
                 isInvincible = false;
+            }
+        }
+
+        //ノックバック処理
+        if (isKnockBack) {
+            knockBackTime += Time.fixedDeltaTime;
+            if (knockBackTime >= 0.8f) {
+                isKnockBack = false;
             }
         }
 
@@ -68,21 +81,50 @@ public class Player : MonoBehaviour {
         transform.Rotate(0, mousePositionX * rotateSensitivityPower, 0, Space.World);
     }
 
+    void MoveInput() {
+        if (Input.GetKey("w")) {
+            front = true;
+        } else front = false;
+
+        if (Input.GetKey("s")) {
+            back = true;
+        } else back = false;
+
+        if (Input.GetKey("a")) {
+            left = true;
+        } else left = false;
+
+        if (Input.GetKey("d")) {
+            right = true;
+        } else right = false;
+
+        if (Input.GetKeyDown(KeyCode.Space) && up == false) {
+            up = true;
+        } else up = false;
+
+        if (front) {
+            straight = 1;
+        }
+        if (back) {
+            straight = -1;
+        }
+        if ((front && back) || (!front && !back)) straight = 0;
+
+        if (left) {
+            side = -1;
+        }
+        if (right) {
+            side = 1;
+        }
+        if ((left && right) || (!left && !right)) side = 0;
+    }
+
     void Move() {
         if (!isKnockBack) {
-            if (Input.GetKey("w")) {
-                rb.velocity = new Vector3(transform.forward.x * movePower, rb.velocity.y, transform.forward.z * movePower);
-            }
-            if (Input.GetKey("s")) {
-                rb.velocity = new Vector3(transform.forward.x * -movePower, rb.velocity.y, transform.forward.z * -movePower);
-            }
-            if (Input.GetKey("a")) {
-                rb.velocity = new Vector3(transform.right.x * -movePower, rb.velocity.y, transform.right.z * -movePower);
-            }
-            if (Input.GetKey("d")) {
-                rb.velocity = new Vector3(transform.right.x * movePower, rb.velocity.y, transform.right.z * movePower);
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && isJump == false) {
+            moveDirection = new Vector3(transform.forward.x * straight + transform.right.x * side,rb.velocity.y,transform.forward.z * straight + transform.right.z * side).normalized;
+            rb.velocity = new Vector3(moveDirection.x * movePower, rb.velocity.y, moveDirection.z * movePower);
+
+            if (up && isJump == false) {
                 rb.velocity = new Vector3(rb.velocity.x, 10f, rb.velocity.z);
                 isJump = true;
             }
@@ -94,28 +136,24 @@ public class Player : MonoBehaviour {
                 }
             }
         }
-        if (isKnockBack) {
-            knockBackTime += Time.fixedDeltaTime;
-            if(knockBackTime >= 0.8f) {
-                isKnockBack = false;
-            }
-        }
+        
     }
 
     void Shot() {
-        if (Physics.Raycast(transform.position, transform.forward * 100, out hit,Mathf.Infinity)) {
+        /*if (Physics.Raycast(transform.position, transform.forward * 100, out hit,Mathf.Infinity)) {
             soundEffect.clip = shotSoundEffect;
             soundEffect.Play();
             if(hit.collider.tag == "Takuan") {
                 hit.collider.GetComponent<Enemy>().Damege();
 
             }
-        }
+        }*/
+        Instantiate(Bullet,transform.position,transform.rotation);
     }
 
     public void Damege() {
         if (!isInvincible) {
-            HP -= 1;
+            Hp -= 1;
             soundEffect.clip = damegeSoundEffect;
             soundEffect.Play();
             isKnockBack = true;
@@ -123,7 +161,7 @@ public class Player : MonoBehaviour {
             damegeFlash.enabled = true;
             knockBackTime = 0;
             invincibleCoolTime = 0;
-            if (HP <= 0) {
+            if (Hp <= 0) {
                 Death();
             }
         }
@@ -133,7 +171,4 @@ public class Player : MonoBehaviour {
         SceneManager.LoadScene("End");
     }
 
-    public int DisplyHealth() {
-        return HP;
-    } 
 }

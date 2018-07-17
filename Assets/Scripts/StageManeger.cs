@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StageManeger : MonoBehaviour {
     GameObject[] takuan;
+    Vector3 playerPosition;
     public GameObject takuanPrefab;
     float createNumber, takuanCreateTime = 0;
     bool isTakuanCreate;
@@ -11,6 +12,7 @@ public class StageManeger : MonoBehaviour {
     // Use this for initialization
     void Start () {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
+        
         score = 0;
         Enemy.hard = 0;
 	}
@@ -34,7 +36,11 @@ public class StageManeger : MonoBehaviour {
 
     void TakuanCreate() {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
+        playerPosition = GameObject.Find("Player").transform.position;
         takuanCreateTime += Time.fixedDeltaTime;
+
+
+
         if (takuanCreateTime >= 0.1) {
             Instantiate(takuanPrefab,new Vector3(Random.Range(12f,-12f),2f, Random.Range(7f, -7f)),Quaternion.identity);
             takuanCreateTime = 0;
@@ -50,5 +56,11 @@ public class StageManeger : MonoBehaviour {
     public void AddScore() {
         score++;
         //Debug.Log(score);
+    }
+
+    public void randomPosition(Vector3 excludePosition) {
+        float value = Time.time * Time.time * 10000;
+        
+
     }
 }

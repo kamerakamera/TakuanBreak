@@ -53,6 +53,16 @@ public class Enemy : MonoBehaviour {
             Instantiate(takuanDamegeParticle, transform.position, Quaternion.identity);
         }
     }
+    public void Damege(int damege) {
+        HP -= damege;
+        if (HP <= 0) {
+            Death();
+        } else {
+            for(int i = 0;i < damege; i++) {
+                Instantiate(takuanDamegeParticle, transform.position, Quaternion.identity);
+            }
+        }
+    }
 
     void Death() {
         takuanSoundEffect.clip = takuanDamegeSoundEffect;

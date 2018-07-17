@@ -16,6 +16,6 @@ public class HealthDisplay : MonoBehaviour {
     }
 
     public void UpdateHealthDisplay() {
-        healthText.text = "HP " + GameObject.Find("Player").GetComponent<Player>().DisplyHealth().ToString();
+        healthText.text = "HP " + GameObject.Find("Player").GetComponent<Player>().Hp.ToString();
     }
 }
