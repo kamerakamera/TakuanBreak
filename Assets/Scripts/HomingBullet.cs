@@ -3,24 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HomingBullet : Bullet {
-    public GameObject p;
+    public GameObject enemy;
     public Vector3 enemyPosition;
 
 	// Use this for initialization
 	void Start () {
-        p = GameObject.Find("Player");
-        bulletSpeed = bulletSpeed * 0.8f;
+        enemy = GameObject.Find("Player");
+        bulletSpeed = bulletSpeed * 0.1f;
         rb = GetComponent<Rigidbody>();
+        deleteTime = 30;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        enemyPosition = p.transform.position;
-        transform.LookAt(enemyPosition);
-        //rb.velocity = (enemyPosition - transform.position).normalized * bulletSpeed;
+        
 	}
 
-    /*void FixedUpdate() {
-        
-    }*/
+    override protected void FixedUpdate() {
+        enemyPosition = enemy.transform.position;
+        transform.LookAt(enemyPosition);
+        ShotBullet(bulletSpeed);
+    }
+
+    protected override void OnTriggerEnter(Collider col) {
+        if (col.tag == "Takuan") {
+            Enemy enemy = col.GetComponent<Enemy>();
+            enemy.Damege();
+            base.Delete();
+        }
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     protected Rigidbody rb;
-    protected float deleteTime = 5f,deleteCount;
+    protected float deleteTime = 30f,deleteCount;
     protected float bulletSpeed = 10;
     // Use this for initialization
     void Start () {
@@ -16,25 +16,27 @@ public class Bullet : MonoBehaviour {
 	void Update () {
 		
 	}
-    private void FixedUpdate() {
-        Straight();
+    protected virtual void FixedUpdate() {
+        ShotBullet(bulletSpeed);
         deleteCount += Time.fixedDeltaTime;
 
         if (deleteCount >= deleteTime) {
+            deleteCount = 0;
+            Debug.Log(deleteCount);
             Delete();
         }
     }
 
-    void Straight() {
-        rb.velocity = transform.forward.normalized * bulletSpeed;
+    protected void ShotBullet(float speed) {
+        rb.velocity = transform.forward.normalized * speed;
     }
 
-    void Delete() {
+    protected void Delete() {
         Debug.Log(this.gameObject);
         GameObject.Destroy(this.gameObject);
     }
 
-    private void OnTriggerEnter(Collider col) {
+    protected virtual void OnTriggerEnter(Collider col) {
         if(col.tag == "Takuan") {
             Enemy enemy = col.GetComponent<Enemy>();
             enemy.Damege();
