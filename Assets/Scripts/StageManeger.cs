@@ -6,7 +6,7 @@ public class StageManeger : MonoBehaviour {
     GameObject[] takuan;
     Vector3 playerPosition;
     public GameObject takuanPrefab;
-    float createNumber, takuanCreateTime = 0;
+    float createNumber, takuanCreateTime = 0,prohibitedArea = 3;
     bool isTakuanCreate;
     public static int score = 0;
     // Use this for initialization
@@ -38,10 +38,15 @@ public class StageManeger : MonoBehaviour {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
         playerPosition = GameObject.Find("Player").transform.position;
         takuanCreateTime += Time.fixedDeltaTime;
-
-
+        float createPoaitonX, createPositionY;
+        if (playerPosition.x <= prohibitedArea) {
+            createPoaitonX = Random.Range(12f, -12f);
+        }
 
         if (takuanCreateTime >= 0.1) {
+
+            
+
             Instantiate(takuanPrefab,new Vector3(Random.Range(12f,-12f),2f, Random.Range(7f, -7f)),Quaternion.identity);
             takuanCreateTime = 0;
             if(takuan.Length >= 4) {
