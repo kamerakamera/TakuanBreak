@@ -695,7 +695,7 @@ MonoBehaviour:
   Bullet: {fileID: 1726045170823306, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
   mainCamera: {fileID: 743613798}
   mousePosition: {x: 0, y: 0, z: 0}
-  isInvincible: 0
+  isInvincible: 1
   damegeFlash: {fileID: 479227718}
   shotSoundEffect: {fileID: 8300000, guid: e2accbc5a60d7d74fa4638e74f788ff6, type: 3}
   damegeSoundEffect: {fileID: 8300000, guid: eeb45d1b1d0385f44986dd3665303d74, type: 3}
@@ -1222,6 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd581b11df74b44c8be4db89e4d8923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   takuanPrefab: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3,
     type: 2}
 --- !u!4 &930668567

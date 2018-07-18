@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour {
     }
 
     protected void Delete() {
-        Debug.Log(this.gameObject);
+        //Debug.Log(this.gameObject);
         GameObject.Destroy(this.gameObject);
     }
 

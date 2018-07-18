@@ -5,14 +5,15 @@ using UnityEngine;
 public class StageManeger : MonoBehaviour {
     GameObject[] takuan;
     Vector3 playerPosition;
-    public GameObject takuanPrefab;
-    float createNumber, takuanCreateTime = 0,prohibitedArea = 3;
+    public GameObject player,takuanPrefab;
+    float createPositonX, createPositionZ;
+    float createNumber, takuanCreateTime = 0,prohibitedArea = 1;
     bool isTakuanCreate;
     public static int score = 0;
     // Use this for initialization
     void Start () {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
-        
+        player = GameObject.Find("Player");
         score = 0;
         Enemy.hard = 0;
 	}
@@ -36,18 +37,12 @@ public class StageManeger : MonoBehaviour {
 
     void TakuanCreate() {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
-        playerPosition = GameObject.Find("Player").transform.position;
         takuanCreateTime += Time.fixedDeltaTime;
-        float createPoaitonX, createPositionY;
-        if (playerPosition.x <= prohibitedArea) {
-            createPoaitonX = Random.Range(12f, -12f);
-        }
 
         if (takuanCreateTime >= 0.1) {
-
-            
-
-            Instantiate(takuanPrefab,new Vector3(Random.Range(12f,-12f),2f, Random.Range(7f, -7f)),Quaternion.identity);
+            TakuanCreatePosition();
+            Debug.Log("X = " + createPositonX + " " + "Y = " + createPositionZ);
+            Instantiate(takuanPrefab,new Vector3(createPositonX,2f, createPositionZ),Quaternion.identity);
             takuanCreateTime = 0;
             if(takuan.Length >= 4) {
                 isTakuanCreate = false;
@@ -63,9 +58,34 @@ public class StageManeger : MonoBehaviour {
         //Debug.Log(score);
     }
 
-    public void randomPosition(Vector3 excludePosition) {
-        float value = Time.time * Time.time * 10000;
-        
+    public void TakuanCreatePosition() {
+        playerPosition = player.transform.position;
+        if (12f - Mathf.Abs(playerPosition.x) <= prohibitedArea) {
+            if(playerPosition.x <= 0) {
+                createPositonX = Random.Range(12f,-12f + prohibitedArea);
+            } else if(playerPosition.x >= 0){
+                createPositonX = Random.Range(12f - prohibitedArea,-12f);
+            }
+        }else if(playerPosition.x > prohibitedArea/2) {
+            float randX = Random.Range(12f - prohibitedArea,-12f);
+            if(playerPosition.x + (prohibitedArea/2) >= randX && playerPosition.x - (prohibitedArea / 2) <= randX) {
+                randX += prohibitedArea;
+            }
+            createPositonX = randX;
+        }
 
+        if (12f - Mathf.Abs(playerPosition.z) <= prohibitedArea) {
+            if (playerPosition.z <= 0) {
+                createPositionZ = Random.Range(7f, -7f + prohibitedArea);
+            } else if (playerPosition.z >= 0) {
+                createPositionZ = Random.Range(7f - prohibitedArea, -7f);
+            }
+        } else if (playerPosition.z > prohibitedArea / 2) {
+            float randZ = Random.Range(7f - prohibitedArea, -7f);
+            if (playerPosition.z + (prohibitedArea / 2) >= randZ && playerPosition.z - (prohibitedArea / 2) <= randZ) {
+                randZ += prohibitedArea;
+            }
+            createPositionZ = randZ;
+        }
     }
 }
