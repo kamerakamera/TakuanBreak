@@ -320,7 +320,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -691,7 +691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8ffbfca65fa114482120f341a90ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHp: 10
+  startHp: 3
   Bullet: {fileID: 1726045170823306, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
   mainCamera: {fileID: 743613798}
   mousePosition: {x: 0, y: 0, z: 0}
@@ -1277,6 +1277,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 1726045170823306, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
   m_IsPrefabParent: 0
@@ -1299,7 +1303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1425668956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1512,7 +1516,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1567,7 +1571,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1622,7 +1626,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
