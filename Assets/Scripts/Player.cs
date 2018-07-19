@@ -148,6 +148,8 @@ public class Player : MonoBehaviour {
 
             }
         }*/
+        soundEffect.clip = shotSoundEffect;
+        soundEffect.Play();
         Instantiate(Bullet,transform.position,transform.rotation);
     }
 
