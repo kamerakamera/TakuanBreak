@@ -42,6 +42,11 @@ public class Bullet : MonoBehaviour {
             enemy.Damege();
             Delete();
         }
+        if(col.tag == "Boss") {
+            Boss boss = col.GetComponent<Boss>();
+            boss.Damege();
+            Delete();
+        }
         else if (col.tag == "Stage") {
             Delete();
         }

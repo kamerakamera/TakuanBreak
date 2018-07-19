@@ -5,15 +5,15 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
     public GameObject player;
     Rigidbody rb;
-    float HP = 3;
-    float moveSpeed = 1;
+    protected float HP = 3;
+    protected float moveSpeed = 1;
     public static int hard;
     public GameObject takuanDiedParticle;
     public GameObject takuanDamegeParticle;
     AudioSource takuanSoundEffect;
     public AudioClip takuanDamegeSoundEffect;
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
         rb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
         takuanSoundEffect = GetComponent<AudioSource>();
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour {
 		
 	}
 
-    void FixedUpdate() {
+    protected virtual void FixedUpdate() {
         Spin();
         Attack();
     }
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour {
         transform.Rotate(0, 0, 80);
     }
 
-    void Attack() {
+    protected virtual void Attack() {
         Vector3 playerPosition = GameObject.Find("Player").transform.position;
         rb.velocity = (playerPosition - transform.position).normalized * moveSpeed;
     }
