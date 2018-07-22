@@ -28,12 +28,12 @@ public class StartScene : MonoBehaviour {
             }
         }
         if(rotateSensitivity.enabled == true) {
-            if (Input.GetKeyDown(KeyCode.RightArrow) && Player.rotateSensitivityPower < 10) {
-                Player.rotateSensitivityPower++;
+            if (Input.GetKeyDown(KeyCode.RightArrow) && Player.rotateSensitivityPower < 7) {
+                Player.rotateSensitivityPower += 0.1f;
                 rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower;
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow) && Player.rotateSensitivityPower > 1) {
-                Player.rotateSensitivityPower--;
+                Player.rotateSensitivityPower -= 0.1f;
                 rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower;
             }
         }
