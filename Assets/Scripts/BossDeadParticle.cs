@@ -16,4 +16,11 @@ public class BossDeadParticle : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider col) {
+        if(col.tag == "Player") {
+            Player p = col.gameObject.GetComponent<Player>();
+            p.Damege(100);
+        }
+    }
 }

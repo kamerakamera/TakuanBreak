@@ -169,6 +169,11 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void Damege(int damege) {
+        Hp -= damege - 1;
+        Damege();
+    }
+
     void Death() {
         SceneManager.LoadScene("End");
     }

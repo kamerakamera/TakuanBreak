@@ -1309,6 +1309,10 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
   m_IsPrefabParent: 0
@@ -1424,7 +1428,7 @@ MonoBehaviour:
     type: 2}
   takuanDamegeSoundEffect: {fileID: 8300000, guid: 5fb31946694fe0f488833a4d9674d7c3,
     type: 3}
-  detonator: {fileID: 100000, guid: 8e02e06584f51ab42986fd44c73d976e, type: 2}
+  detonator: {fileID: 1991078519252902, guid: fdaf9c62069e5ce44873ec7a734aaa34, type: 2}
 --- !u!1 &1425668955
 GameObject:
   m_ObjectHideFlags: 0

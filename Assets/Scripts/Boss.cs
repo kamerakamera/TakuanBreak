@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Boss : Enemy {
     public GameObject detonator;
-    private float selfDestructTime = 0,selfDestructCount;
+    private float selfDestructTime = 10,selfDestructCount;
     private bool startSelfDestruct,isSelfDestruct,endExplotion;
+    Material takuanMaterial;
+    Color changeColor;
 
 	// Use this for initialization
 	override protected void Start () {
@@ -48,7 +50,8 @@ public class Boss : Enemy {
 
     void selfDestruct() {
         selfDestructCount += Time.deltaTime;
-        if(selfDestructCount >= selfDestructTime) {
+        GetComponent<Renderer>().material.color = new Color(1,1 - (1 * selfDestructCount / selfDestructTime), 0,1);
+        if (selfDestructCount >= selfDestructTime) {
             GameObject exp = Instantiate(detonator, transform.position, Quaternion.identity);
             Destroy(exp, 5f);
             endExplotion = true;
