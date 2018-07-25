@@ -320,7 +320,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1243,7 +1243,7 @@ RectTransform:
   - {fileID: 479227717}
   - {fileID: 355262188}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1311,7 +1311,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1357,7 +1357,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1240620177
 Prefab:
@@ -1396,7 +1396,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4170412532825676, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1726045170823306, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
       propertyPath: m_IsActive
@@ -1429,6 +1429,7 @@ MonoBehaviour:
   takuanDamegeSoundEffect: {fileID: 8300000, guid: 5fb31946694fe0f488833a4d9674d7c3,
     type: 3}
   detonator: {fileID: 1991078519252902, guid: fdaf9c62069e5ce44873ec7a734aaa34, type: 2}
+  selfDestructHP: 40
 --- !u!1 &1425668955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,7 +1581,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4825676227521742, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_Name
@@ -1729,7 +1730,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1784,7 +1785,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
@@ -1839,7 +1840,7 @@ Prefab:
       objectReference: {fileID: 629445091}
     - target: {fileID: 1855015112139774, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 391b41ffa79cd3c4c92b1ca62e51b9f3, type: 2}

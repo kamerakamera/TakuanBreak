@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Boss : Enemy {
     public GameObject detonator;
+    public float selfDestructHP = 10;
     private float selfDestructTime = 10,selfDestructCount;
     private bool startSelfDestruct,isSelfDestruct,endExplotion;
     Material takuanMaterial;
@@ -19,7 +20,7 @@ public class Boss : Enemy {
 	
 	// Update is called once per frame
 	void Update () {
-        if (HP <= 10 && !isSelfDestruct) {
+        if (HP <= selfDestructHP && !isSelfDestruct) {
             startSelfDestruct = true;
             isSelfDestruct = true;
         }
@@ -34,6 +35,13 @@ public class Boss : Enemy {
 
     protected override void Attack() {
         
+    }
+
+    protected override void Death() {
+        takuanSoundEffect.clip = takuanDamegeSoundEffect;
+        takuanSoundEffect.Play();
+        Destroy(this.gameObject);
+        Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
     }
 
     void bodyBlow() {

@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour {
     public static int hard;
     public GameObject takuanDiedParticle;
     public GameObject takuanDamegeParticle;
-    AudioSource takuanSoundEffect;
+    protected AudioSource takuanSoundEffect;
     public AudioClip takuanDamegeSoundEffect;
 	// Use this for initialization
 	protected virtual void Start () {
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    void Death() {
+    protected virtual void Death() {
         takuanSoundEffect.clip = takuanDamegeSoundEffect;
         takuanSoundEffect.Play();
         GameObject.Find("StageManeger").GetComponent<StageManeger>().AddScore();

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
     protected Rigidbody rb;
     protected float deleteTime = 30f,deleteCount;
-    protected float bulletSpeed = 10;
+    protected float bulletSpeed = 30;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
