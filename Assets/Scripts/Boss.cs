@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : Enemy {
-    public GameObject detonator;
+    public GameObject detonator,selfDestructEffect;
     public float selfDestructHP = 10;
     private float selfDestructTime = 10,selfDestructCount;
     private bool startSelfDestruct,isSelfDestruct,endExplotion;
@@ -21,6 +21,7 @@ public class Boss : Enemy {
 	// Update is called once per frame
 	void Update () {
         if (HP <= selfDestructHP && !isSelfDestruct) {
+            Instantiate(selfDestructEffect, transform.position, Quaternion.identity);
             startSelfDestruct = true;
             isSelfDestruct = true;
         }

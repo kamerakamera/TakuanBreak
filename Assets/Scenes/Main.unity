@@ -1429,7 +1429,9 @@ MonoBehaviour:
   takuanDamegeSoundEffect: {fileID: 8300000, guid: 5fb31946694fe0f488833a4d9674d7c3,
     type: 3}
   detonator: {fileID: 1991078519252902, guid: fdaf9c62069e5ce44873ec7a734aaa34, type: 2}
-  selfDestructHP: 40
+  selfDestructEffect: {fileID: 1097466804742512, guid: 78d757666e89faf4998d24caf3fda460,
+    type: 2}
+  selfDestructHP: 30
 --- !u!1 &1425668955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,6 +1682,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1472957785}
+--- !u!1001 &1575892905
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.4538636
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.508065
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.96184635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073244892181170, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 78d757666e89faf4998d24caf3fda460, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1611669378
 Prefab:
   m_ObjectHideFlags: 0
