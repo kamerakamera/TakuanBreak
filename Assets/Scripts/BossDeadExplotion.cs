@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossDeadParticle : MonoBehaviour {
+public class BossDeadExplotion : MonoBehaviour {
     float deleteCount, deleteTime = 10;
     // Use this for initialization
     void Start() {

@@ -61,6 +61,7 @@ public class Boss : Enemy {
         selfDestructCount += Time.deltaTime;
         GetComponent<Renderer>().material.color = new Color(1,1 - (1 * selfDestructCount / selfDestructTime), 0,1);
         if (selfDestructCount >= selfDestructTime) {
+            Debug.Log("end....");
             GameObject exp = Instantiate(detonator, transform.position, Quaternion.identity);
             Destroy(exp, 5f);
             endExplotion = true;
