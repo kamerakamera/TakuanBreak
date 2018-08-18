@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Almgp_particle_vol_1/scene/OneShotDemo.unity
+- path: Assets/Scenes/Main.unity
   isLoaded: 1
   isActive: 1
