@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StageManeger : MonoBehaviour {
     GameObject[] takuan;
+    public GameObject bossTakuan;
     Vector3 playerPosition;
     public GameObject player,takuanPrefab;
     float createPositionX, createPositionZ;
@@ -20,7 +21,7 @@ public class StageManeger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+
     }
 
     private void FixedUpdate() {
@@ -30,7 +31,7 @@ public class StageManeger : MonoBehaviour {
     }
     public void Search() {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
-        if(takuan.Length < 6) {
+        if(takuan.Length < 5) {
             //isTakuanCreate = true;
             TakuanCreate();
         } 
@@ -55,6 +56,9 @@ public class StageManeger : MonoBehaviour {
 
     public void AddScore() {
         score++;
+        if(score % 40 == 0) {
+            BossStage();
+        }
         //Debug.Log(score);
     }
 
@@ -67,5 +71,10 @@ public class StageManeger : MonoBehaviour {
             createPositionZ = Random.Range(7f, -7f);
         }
         while (createPositionZ >= playerPosition.z - prohibitedArea && createPositionZ <= playerPosition.z + prohibitedArea);
+    }
+
+    public void BossStage() {
+        Instantiate(bossTakuan, new Vector3(0, 5.28f, 0), Quaternion.identity);
+        
     }
 }

@@ -21,12 +21,10 @@ public class Boss : Enemy {
 	// Update is called once per frame
 	void Update () {
         if (HP <= selfDestructHP && !isSelfDestruct) {
-            Instantiate(selfDestructEffect, transform.position, Quaternion.identity);
-            startSelfDestruct = true;
-            isSelfDestruct = true;
+            StartDestruct();
         }
         if (startSelfDestruct && !endExplotion) {
-            selfDestruct();
+            SelfDestruct();
         }
 	}
 
@@ -45,23 +43,27 @@ public class Boss : Enemy {
         Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
     }
 
-    void bodyBlow() {
+    void BodyBlow() {
 
     }
 
-    void laserAttack() {
+    void LaserAttack() {
 
     }
 
-    void hormingBullet() {
+    void HormingBullet() {
 
     }
 
-    void selfDestruct() {
+    void StartDestruct() {
+        startSelfDestruct = true;
+        isSelfDestruct = true;
+    }
+
+    void SelfDestruct() {
         selfDestructCount += Time.deltaTime;
         GetComponent<Renderer>().material.color = new Color(1,1 - (1 * selfDestructCount / selfDestructTime), 0,1);
         if (selfDestructCount >= selfDestructTime) {
-            Debug.Log("end....");
             GameObject exp = Instantiate(detonator, transform.position, Quaternion.identity);
             Destroy(exp, 5f);
             endExplotion = true;
