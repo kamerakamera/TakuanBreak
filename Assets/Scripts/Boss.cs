@@ -16,6 +16,7 @@ public class Boss : Enemy {
         HP = 50;
         moveSpeed = 0.3f;
         endExplotion = false;
+        stageManeger = GameObject.Find("StageManeger").GetComponent<StageManeger>();
 	}
 	
 	// Update is called once per frame
@@ -41,6 +42,7 @@ public class Boss : Enemy {
         takuanSoundEffect.Play();
         Destroy(this.gameObject);
         Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
+        stageManeger.EndBossStage();
     }
 
     void BodyBlow() {

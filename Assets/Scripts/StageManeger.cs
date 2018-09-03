@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class StageManeger : MonoBehaviour {
     GameObject[] takuan;
-    public GameObject bossTakuan;
+    public GameObject bossTakuan,nowBossTakuan;
     Vector3 playerPosition;
     public GameObject player,takuanPrefab;
     float createPositionX, createPositionZ;
     float createNumber,prohibitedArea = 1;
-    bool isTakuanCreate;
-    public static int score = 0;
+    bool isTakuanCreate,isBoss;
+    public static float score = 0;
     // Use this for initialization
     void Start () {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
@@ -25,14 +25,11 @@ public class StageManeger : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        /*if (isTakuanCreate) {
-            TakuanCreate();
-        }*/
+        
     }
     public void Search() {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
-        if(takuan.Length < 5) {
-            //isTakuanCreate = true;
+        if(takuan.Length <= 5) {
             TakuanCreate();
         } 
     }
@@ -40,26 +37,26 @@ public class StageManeger : MonoBehaviour {
     void TakuanCreate() {
         TakuanCreatePosition();
         Debug.Log("X = " + createPositionX + " " + "Y = " + createPositionZ);
-        /*if (takuan.Length >= 5) {
-            isTakuanCreate = false;
-        }*/
         Instantiate(takuanPrefab,new Vector3(createPositionX,2f, createPositionZ),Quaternion.identity);
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
-        if (takuan.Length > 5) {
-            //isTakuanCreate = false;
-            if (score % 6 == 0) {
-                Enemy.hard++;
-            }
+        if(takuan.Length <= 5) {
+            TakuanCreate();
         }
-        
+
+        if (score % 10 == 0) {
+            Enemy.hard++;
+            Debug.Log("speedUp");
+        }
+
     }
 
     public void AddScore() {
         score++;
-        if(score % 40 == 0) {
-            BossStage();
-        }
         //Debug.Log(score);
+    }
+
+    public float GetScore() {
+        return score;
     }
 
     public void TakuanCreatePosition() {
@@ -73,8 +70,17 @@ public class StageManeger : MonoBehaviour {
         while (createPositionZ >= playerPosition.z - prohibitedArea && createPositionZ <= playerPosition.z + prohibitedArea);
     }
 
-    public void BossStage() {
-        Instantiate(bossTakuan, new Vector3(0, 5.28f, 0), Quaternion.identity);
-        
+    public void StartBossStage() {
+        nowBossTakuan = Instantiate(bossTakuan, new Vector3(0, 5.28f, 0), Quaternion.identity);
+        foreach (GameObject gameobj in takuan) {
+            if (gameobj == null) continue;
+            gameobj.gameObject.GetComponent<Enemy>().DestroyObject();
+        }
+        isBoss = true;
+    }
+
+    public void EndBossStage() {
+        Search();
+        isBoss = false;
     }
 }

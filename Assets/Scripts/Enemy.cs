@@ -12,9 +12,11 @@ public class Enemy : MonoBehaviour {
     public GameObject takuanDamegeParticle;
     protected AudioSource takuanSoundEffect;
     public AudioClip takuanDamegeSoundEffect;
+    public StageManeger stageManeger;
 	// Use this for initialization
 	protected virtual void Start () {
         rb = GetComponent<Rigidbody>();
+        stageManeger = GameObject.Find("StageManeger").GetComponent<StageManeger>();
         player = GameObject.Find("Player");
         takuanSoundEffect = GetComponent<AudioSource>();
         HP = 3;
@@ -27,7 +29,7 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        
 	}
 
     protected virtual void FixedUpdate() {
@@ -67,11 +69,19 @@ public class Enemy : MonoBehaviour {
     protected virtual void Death() {
         takuanSoundEffect.clip = takuanDamegeSoundEffect;
         takuanSoundEffect.Play();
-        GameObject.Find("StageManeger").GetComponent<StageManeger>().AddScore();
-        Destroy(this.gameObject);
-        GameObject.Find("StageManeger").GetComponent<StageManeger>().Search();
-        Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
+        DestroyObject();
+        stageManeger.AddScore();
+        if (stageManeger.GetScore() % 3.0f == 0) {
+            stageManeger.StartBossStage();
+        } else {
+            stageManeger.Search();
+        }
     }
+
+    public void DestroyObject() {
+        Destroy(this.gameObject);
+        Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
+    } 
 
     private void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Player") {
