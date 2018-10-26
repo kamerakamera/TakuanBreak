@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
         if (isInvincible) {
             invincibleCoolTime += Time.fixedDeltaTime;
             damegeFlash.color = new Color(damegeFlash.color.r, damegeFlash.color.g, damegeFlash.color.b, 1 - invincibleCoolTime);
-            if (invincibleCoolTime >= 5.0f) {
+            if (invincibleCoolTime >= 1.0f) {
                 isInvincible = false;
             }
         }
@@ -175,7 +175,8 @@ public class Player : MonoBehaviour {
     }
 
     void Death() {
-        SceneManager.LoadScene("End");
+        //SceneManager.LoadScene("End");
+        //カメラ吹き飛ばし処理して時間経過でSceneとばそうぜ
     }
 
 }

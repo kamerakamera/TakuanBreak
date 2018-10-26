@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
     public GameObject player;
-    Rigidbody rb;
+    protected Rigidbody rb;
     protected float HP = 3;
     protected float moveSpeed = 1;
     public static int hard;
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour {
         Attack();
     }
 
-    void Spin() {
+    protected void Spin() {
         transform.Rotate(0, 0, 80);
     }
 
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour {
         rb.velocity = (playerPosition - transform.position).normalized * moveSpeed;
     }
 
-    public void Damege() {
+    public virtual void Damege() {
         HP -= 1;
         if(HP <= 0) {
             Death();
@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour {
         Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
     } 
 
-    private void OnCollisionStay(Collision collision) {
+    protected virtual void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Player") {
             Player p = player.GetComponent<Player>();
             Rigidbody playerRb = player.GetComponent<Rigidbody>();
