@@ -36,7 +36,6 @@ public class StageManeger : MonoBehaviour {
 
     void TakuanCreate() {
         TakuanCreatePosition();
-        Debug.Log("X = " + createPositionX + " " + "Y = " + createPositionZ);
         Instantiate(takuanPrefab,new Vector3(createPositionX,2f, createPositionZ),Quaternion.identity);
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
         if(takuan.Length <= 5) {

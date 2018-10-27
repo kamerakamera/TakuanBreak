@@ -215,6 +215,7 @@ MonoBehaviour:
     type: 2}
   takuanDamegeSoundEffect: {fileID: 8300000, guid: 5fb31946694fe0f488833a4d9674d7c3,
     type: 3}
+  stageManeger: {fileID: 0}
 --- !u!135 &135064547404976228
 SphereCollider:
   m_ObjectHideFlags: 1

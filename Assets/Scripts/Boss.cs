@@ -21,9 +21,9 @@ public class Boss : Enemy {
     [SerializeField]
     float remainingBullet,shotIntervalTime;
     [SerializeField]
-    float shotSpeed,bodyRushSpeed;
-    float shotCount,shotIntervalCount;
-    bool isShot,isStartDestruct,isDestruct;
+    float shotSpeed, bodyRushSpeed,waitInterval;
+    float shotCount,shotIntervalCount,waitIntervalCount;
+    bool isShot,isStartDestruct,isDestruct,isWait,isAvoid;
     Vector3 firstPosition;
 
     // Use this for initialization
@@ -47,6 +47,7 @@ public class Boss : Enemy {
         IsState = stateName;
         if(stateName == BossState.wait) {
             GetPlayerDistance();
+            isWait = true;
         }
         if(stateName == BossState.shotBullet) {
             shotCount = 0;
@@ -60,27 +61,32 @@ public class Boss : Enemy {
     void UpdateAction() {
         if(IsState == BossState.wait) {
             //State変更処理
-            if (isStartDestruct == true) {
-                destructParticle = Instantiate(destructParticlePrefab, Vector3.zero, Quaternion.identity);
-                isStartDestruct = false;
-                isDestruct = true;
-                ChengeState(BossState.destruct);
-            } else {
-                if (playerDistance <= 10) {
-                    ChengeState(BossState.bodyRush);
+            PlayerLook();
+            if (isWait) {
+                IntervalCount(ref waitIntervalCount, waitInterval, ref isWait, false);
+            }else{
+                if (isStartDestruct == true) {
+                    destructParticle = Instantiate(destructParticlePrefab, Vector3.zero, Quaternion.identity);
+                    isStartDestruct = false;
+                    isDestruct = true;
+                    ChengeState(BossState.destruct);
                 } else {
-                    ChengeState(BossState.shotBullet);
+                    if (playerDistance <= 8) {
+                        ChengeState(BossState.bodyRush);
+                    } else {
+                        ChengeState(BossState.shotBullet);
+                    }
                 }
             }
-            
         }
         if(IsState == BossState.shotBullet) {
             //一定時間ごとにshotする処理
+            PlayerLook();
             if(isShot == false) {
                 ShotExplodeBullet();
                 shotCount++;
             } else {
-                ShotInterval();
+                IntervalCount(ref shotIntervalCount, shotIntervalTime,ref isShot, false);
                 if (shotCount >= remainingBullet) {
                     ChengeState(BossState.wait);
                 }
@@ -91,12 +97,14 @@ public class Boss : Enemy {
         }
         if(IsState == BossState.destruct) {
             SelfDestruct();
+            Spin();
         }
         if(IsState == BossState.bodyRush) {
             rb.velocity = playerDirection * bodyRushSpeed;
             Spin();
         }
         if(IsState == BossState.backStartPos) {
+            PlayerLook();
             rb.velocity = (firstPosition - transform.position).normalized * bodyRushSpeed * 0.6f;
             if(Vector3.Distance(transform.position,firstPosition) <= 0.1f) {
                 transform.position = firstPosition;
@@ -128,6 +136,10 @@ public class Boss : Enemy {
         stageManeger.EndBossStage();
     }
 
+    void PlayerLook() {
+        transform.rotation = Quaternion.LookRotation(player.transform.position);
+    }
+
     void BodyBlow() {
 
     }
@@ -141,14 +153,6 @@ public class Boss : Enemy {
         GameObject explodeBullet = Instantiate(bulletPrefab, transform.position + playerDirection * 2.0f, Quaternion.identity);
         explodeBullet.GetComponent<Rigidbody>().velocity = playerDirection * shotSpeed;
         isShot = true;
-    }
-
-    void ShotInterval() {
-        shotIntervalCount += Time.deltaTime;
-        if(shotIntervalCount >= shotIntervalTime) {
-            isShot = false;
-            shotIntervalCount = 0;
-        }
     }
 
     void GetPlayerDirection() {
@@ -176,6 +180,14 @@ public class Boss : Enemy {
         base.Damege();
         if(HP <= selfDestructHP && !isDestruct) {
             ChengeState(BossState.backStartPos);
+        }
+    }
+
+    void IntervalCount(ref float count,float intervalTime,ref bool isTrigger,bool setBool) {
+        count += Time.deltaTime;
+        if(count >= intervalTime) {
+            isTrigger = setBool;
+            count = 0;
         }
     }
 

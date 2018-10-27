@@ -100,7 +100,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &82131051515167344
 AudioSource:
@@ -209,7 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  HP: 70
   takuanDiedParticle: {fileID: 1079387089881798, guid: b8b80fa99dd95c0408b5cce2950d2a85,
     type: 2}
   takuanDamegeParticle: {fileID: 1492832165331968, guid: 6a26ee06d5a9294439c5e19e308ebe59,
@@ -226,9 +225,10 @@ MonoBehaviour:
   destructParticlePrefab: {fileID: 1530733035635712, guid: 964ee27d103b0674c9954b4caf28c0d5,
     type: 2}
   remainingBullet: 3
-  shotIntervalTime: 1
-  shotSpeed: 10
-  bodyRushSpeed: 10
+  shotIntervalTime: 0.7
+  shotSpeed: 15
+  bodyRushSpeed: 15
+  waitInterval: 2
 --- !u!135 &135498412150941884
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -13,9 +13,11 @@ public class Player : MonoBehaviour {
     public Vector3 mousePosition;
     float changeAmountAxisY;
     public static float rotateSensitivityPower = 4;
-    float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0;
+    [SerializeField]
+    float avoidInterval,avoidCoolTime;
+    float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0,avoidIntervalCount,avoidCoolTimeCount;
     RaycastHit hit;
-    bool isJump,isKnockBack;
+    bool isJump,isKnockBack,isAvoid,avoidAble;
     Vector3 moveDirection;
     bool front,back,right,left,up;
     int straight, side;
@@ -34,6 +36,8 @@ public class Player : MonoBehaviour {
         soundEffect = GetComponent<AudioSource>();
         movePower = 3;
         damegeFlash.enabled = false;
+        avoidAble = true;
+        isAvoid = false;
 	}
 	
 	// Update is called once per frame
@@ -45,8 +49,21 @@ public class Player : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        Move();
+        if (Input.GetKeyDown(KeyCode.Space) && avoidAble && !isAvoid) {
+            Avoid();
+            isAvoid = true;
+            avoidAble = false;
+        }
+        if(!isAvoid){
+            Move();
+        }
         lookAround();
+        if (isAvoid) {
+            IntervalCount(ref avoidIntervalCount, avoidInterval, ref isAvoid, false);
+        }
+        if(!isAvoid && !avoidAble) {
+            IntervalCount(ref avoidCoolTimeCount, avoidCoolTime, ref avoidAble, true);
+        }
 
         //無敵時間
         if (isInvincible) {
@@ -97,11 +114,11 @@ public class Player : MonoBehaviour {
         if (Input.GetKey("d")) {
             right = true;
         } else right = false;
-
+        /*
         if (Input.GetKeyDown(KeyCode.Space) && up == false) {
             up = true;
         } else up = false;
-
+        */
         if (front) {
             straight = 1;
         }
@@ -125,7 +142,7 @@ public class Player : MonoBehaviour {
             rb.velocity = new Vector3(moveDirection.x * movePower, rb.velocity.y, moveDirection.z * movePower);
 
             if (up && isJump == false) {
-                rb.velocity = new Vector3(rb.velocity.x, 10f, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, 5f, rb.velocity.z);
                 isJump = true;
             }
             if (isJump) {
@@ -136,7 +153,23 @@ public class Player : MonoBehaviour {
                 }
             }
         }
-        
+    }
+
+    void Avoid() {
+        //回避方法は色々考えた方がよさそう
+        if (side == 0 && straight == 0) {
+            straight = -1;
+        }
+        moveDirection = new Vector3(transform.forward.x * straight + transform.right.x * side, rb.velocity.y, transform.forward.z * straight + transform.right.z * side).normalized;
+        rb.velocity = new Vector3(moveDirection.x * movePower * 8.0f, rb.velocity.y, moveDirection.z * movePower * 8.0f);
+    }
+
+    void IntervalCount(ref float count, float intervalTime, ref bool isTrigger, bool setBool) {
+        count += Time.deltaTime;
+        if (count >= intervalTime) {
+            isTrigger = setBool;
+            count = 0;
+        }
     }
 
     void Shot() {
@@ -145,7 +178,6 @@ public class Player : MonoBehaviour {
             soundEffect.Play();
             if(hit.collider.tag == "Takuan") {
                 hit.collider.GetComponent<Enemy>().Damege();
-
             }
         }*/
         soundEffect.clip = shotSoundEffect;

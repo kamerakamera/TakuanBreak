@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour {
     }
 
     protected void Spin() {
-        transform.Rotate(0, 0, 80);
+        transform.Rotate(0, 80, 0);
     }
 
     protected virtual void Attack() {
