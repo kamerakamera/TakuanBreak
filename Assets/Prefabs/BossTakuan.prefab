@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  HP: 100
   takuanDiedParticle: {fileID: 1079387089881798, guid: b8b80fa99dd95c0408b5cce2950d2a85,
     type: 2}
   takuanDamegeParticle: {fileID: 1492832165331968, guid: 6a26ee06d5a9294439c5e19e308ebe59,
@@ -219,7 +220,7 @@ MonoBehaviour:
   detonator: {fileID: 1903929289479268, guid: ae203433d99bd4a41b9d1ab398279e6b, type: 2}
   selfDestructEffect: {fileID: 1097466804742512, guid: 78d757666e89faf4998d24caf3fda460,
     type: 2}
-  selfDestructHP: 40
+  selfDestructHP: 35
   bulletPrefab: {fileID: 1771616829266850, guid: d9007b76926417b4fa55d54a4f267939,
     type: 2}
   destructParticlePrefab: {fileID: 1530733035635712, guid: 964ee27d103b0674c9954b4caf28c0d5,

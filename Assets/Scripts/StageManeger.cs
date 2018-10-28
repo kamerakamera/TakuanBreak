@@ -9,7 +9,7 @@ public class StageManeger : MonoBehaviour {
     public GameObject player,takuanPrefab;
     float createPositionX, createPositionZ;
     float createNumber,prohibitedArea = 1;
-    bool isTakuanCreate,isBoss;
+    public bool isBoss;
     public static float score = 0;
     // Use this for initialization
     void Start () {

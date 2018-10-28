@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  HP: 3
   takuanDiedParticle: {fileID: 1679236082032756, guid: 8219f54e08b89494a87237a4015a8682,
     type: 2}
   takuanDamegeParticle: {fileID: 1492832165331968, guid: 6a26ee06d5a9294439c5e19e308ebe59,

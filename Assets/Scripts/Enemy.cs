@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
     public GameObject player;
     protected Rigidbody rb;
-    protected float HP = 3;
+    public float HP;
     protected float moveSpeed = 1;
     public static int hard;
     public GameObject takuanDiedParticle;
@@ -19,7 +19,6 @@ public class Enemy : MonoBehaviour {
         stageManeger = GameObject.Find("StageManeger").GetComponent<StageManeger>();
         player = GameObject.Find("Player");
         takuanSoundEffect = GetComponent<AudioSource>();
-        HP = 3;
         moveSpeed = 1;
         if (hard >= 1) {
             moveSpeed += hard * 0.1f;

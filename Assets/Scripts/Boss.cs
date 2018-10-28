@@ -30,7 +30,6 @@ public class Boss : Enemy {
     override protected void Start () {
         base.Start();
         firstPosition = transform.position;
-        HP = 70;
         moveSpeed = 0.3f;
         isDestruct = false;
         isStartDestruct = false;
