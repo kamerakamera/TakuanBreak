@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour {
 
     protected void Delete() {
         //Debug.Log(this.gameObject);
-        GameObject.Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 
     protected virtual void OnTriggerEnter(Collider col) {

@@ -8,25 +8,33 @@ public class Player : MonoBehaviour {
     Rigidbody rb;
     public int Hp { get; set; }
     public int startHp;
-    public GameObject Bullet;
+    [SerializeField]
+    private GameObject Bullet,homingBulletPrefab;
+    private GameObject isShotHomingBullet;
     public Camera mainCamera;
     public Vector3 mousePosition;
     float changeAmountAxisY;
     public static float rotateSensitivityPower = 4;
     [SerializeField]
     float avoidInterval,avoidCoolTime;
-    float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0,avoidIntervalCount,avoidCoolTimeCount;
+    float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0,avoidIntervalCount,avoidCoolTimeCount,lockOnCount,lockOnTime = 1;
+    public float lockOnShotCoolTime, lockOnShotCoolTimeCount;
     RaycastHit hit;
-    bool isJump,isKnockBack,isAvoid,avoidAble;
+    bool isJump, isKnockBack, isAvoid, avoidAble, lockOnShotAble, avoidInput, lockOnInput, startLockOn, isLaunchPreparation, completeLockOn;
     Vector3 moveDirection;
     bool front,back,right,left,up;
-    int straight, side;
-    public bool isInvincible;
+    int straight, side,lockOnTargetRemoveCount;
+    public bool isInvincible,isCreateTargetSite;
     float movePower;
     public Image damegeFlash;
     AudioSource soundEffect;
     public AudioClip shotSoundEffect;
     public AudioClip damegeSoundEffect;
+    public List<GameObject> lockOnTargetObj;
+    [SerializeField]
+    UIManeger uiManeger;
+    [SerializeField]
+    GameObject LockOntargetView;
     
 
     // Use this for initialization
@@ -38,6 +46,11 @@ public class Player : MonoBehaviour {
         damegeFlash.enabled = false;
         avoidAble = true;
         isAvoid = false;
+        isCreateTargetSite = false;
+        lockOnTargetRemoveCount = 0;
+        isLaunchPreparation = false;
+        startLockOn = false;
+        LockOntargetView.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -46,18 +59,50 @@ public class Player : MonoBehaviour {
             Shot();
         }
         MoveInput();
+        AvoidInput();
+        if (lockOnShotAble) {
+            LockOnInput();
+        }
     }
 
     void FixedUpdate() {
-        if (Input.GetKeyDown(KeyCode.Space) && avoidAble && !isAvoid) {
-            Avoid();
-            isAvoid = true;
-            avoidAble = false;
+        if (!lockOnShotAble) {
+            IntervalCount(ref lockOnShotCoolTimeCount, lockOnShotCoolTime, ref lockOnShotAble, true);
         }
-        if(!isAvoid){
+        LookAround();
+        if (!isLaunchPreparation) {
+            if (avoidInput && avoidAble && !isAvoid) {
+                Avoid();
+                isAvoid = true;
+                avoidAble = false;
+            }
+        }
+        if (!isAvoid){
             Move();
+            if (lockOnShotAble) {
+                if (lockOnInput && startLockOn && isLaunchPreparation && !isCreateTargetSite) {
+                    LockOnTarget();
+                    LockOntargetView.SetActive(true);
+                    uiManeger.CreateTargetSite(lockOnTargetObj, lockOnTargetObj.Count);
+                    isCreateTargetSite = true;
+                }
+                if (isCreateTargetSite) {
+                    uiManeger.TrackingTarget(lockOnTargetObj,ref isCreateTargetSite);
+                    if (!isCreateTargetSite) {
+                        ResetLockOnBool();
+                    }
+                }
+                if (isLaunchPreparation && completeLockOn) {
+                    if (lockOnTargetObj.Count >= 1) {
+                        for (int i = 0; i < lockOnTargetObj.Count; i++) {
+                            ShotHomingBullet(i);
+                        }
+                    }
+                    ResetLockOnBool();
+                }
+            }
+            
         }
-        lookAround();
         if (isAvoid) {
             IntervalCount(ref avoidIntervalCount, avoidInterval, ref isAvoid, false);
         }
@@ -81,10 +126,9 @@ public class Player : MonoBehaviour {
                 isKnockBack = false;
             }
         }
-
     }
 
-    void lookAround() {
+    void LookAround() {
         mousePosition = Input.mousePosition;
         float mousePositionX = Input.GetAxis("Mouse X");
         float mousePositionY = Input.GetAxis("Mouse Y");
@@ -114,11 +158,6 @@ public class Player : MonoBehaviour {
         if (Input.GetKey("d")) {
             right = true;
         } else right = false;
-        /*
-        if (Input.GetKeyDown(KeyCode.Space) && up == false) {
-            up = true;
-        } else up = false;
-        */
         if (front) {
             straight = 1;
         }
@@ -155,6 +194,14 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void AvoidInput() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            avoidInput = true;
+        } else {
+            avoidInput = false;
+        }
+    }
+
     void Avoid() {
         //回避方法は色々考えた方がよさそう
         if (side == 0 && straight == 0) {
@@ -185,6 +232,57 @@ public class Player : MonoBehaviour {
         Instantiate(Bullet,transform.position,transform.rotation);
     }
 
+    void LockOnInput() {
+        //一定時間入力させ続ける
+        if (Input.GetMouseButtonDown(1) && !isLaunchPreparation) {
+            lockOnInput = true;
+            isLaunchPreparation = true;
+            startLockOn = true;
+        } else {
+            lockOnInput = false;
+        }
+        if (startLockOn) {
+            lockOnCount += Time.deltaTime;
+            if(lockOnCount >= lockOnTime) {
+                lockOnCount = 0;
+                startLockOn = false;
+                completeLockOn = true;
+            }
+        }
+    }
+
+    void ResetLockOnBool() {
+        LockOntargetView.SetActive(false);
+        lockOnShotAble = false;
+        uiManeger.DestroyTargetSite();
+        isCreateTargetSite = false;
+        isLaunchPreparation = false;
+        completeLockOn = false;
+        startLockOn = false;
+        lockOnCount = 0;
+        lockOnTargetObj.Clear();
+    }
+
+    void LockOnTarget() {
+        foreach(GameObject checkObj in GameObject.FindGameObjectsWithTag("Takuan")) {
+            if (checkObj.GetComponent<Enemy>().IsRendered) {
+                lockOnTargetObj.Add(checkObj);
+            }
+        }
+        foreach (GameObject checkObj in GameObject.FindGameObjectsWithTag("Boss")) {
+            if (checkObj.GetComponent<Boss>().IsRendered) {
+                lockOnTargetObj.Add(checkObj);
+            }
+        }
+    }
+
+    void ShotHomingBullet(int bulletNum) {
+        isShotHomingBullet = Instantiate(homingBulletPrefab,transform.position,Quaternion.identity);
+        if (lockOnTargetObj[bulletNum] != null) {
+            isShotHomingBullet.GetComponent<HomingBullet>().SetTargetEnemy(lockOnTargetObj[bulletNum]);
+        }
+    }
+
     public void Damege() {
         if (!isInvincible) {
             Hp -= 1;
@@ -195,6 +293,9 @@ public class Player : MonoBehaviour {
             damegeFlash.enabled = true;
             knockBackTime = 0;
             invincibleCoolTime = 0;
+            if (isLaunchPreparation) {
+                ResetLockOnBool();
+            }
             if (Hp <= 0) {
                 Death();
             }

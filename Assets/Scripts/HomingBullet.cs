@@ -3,33 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HomingBullet : Bullet {
-    public GameObject enemy;
-    public Vector3 enemyPosition;
+    public GameObject enemyObj;
+    //public Vector3 enemyPosition;
 
 	// Use this for initialization
 	void Start () {
-        enemy = GameObject.Find("Player");
-        bulletSpeed = bulletSpeed * 0.1f;
+        //bulletSpeed = bulletSpeed * 0.1f;
         rb = GetComponent<Rigidbody>();
         deleteTime = 30;
+        deleteCount = 0;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
+        HomingEnemy();
 	}
 
-    override protected void FixedUpdate() {
-        enemyPosition = enemy.transform.position;
-        transform.LookAt(enemyPosition);
-        ShotBullet(bulletSpeed);
+
+
+    protected override void FixedUpdate() {
+        //enemyPosition = enemyObj.transform.position;
+        //transform.LookAt(enemyPosition);
+        //ShotBullet(bulletSpeed);
     }
+
+    public void SetTargetEnemy(GameObject targetObj) {
+        enemyObj = targetObj;
+    }
+
+    public void HomingEnemy() {
+        if(enemyObj == null) {
+            Delete();
+        } else {
+            rb.velocity = (enemyObj.transform.position - transform.position).normalized * bulletSpeed;
+        }
+    } 
 
     protected override void OnTriggerEnter(Collider col) {
         if (col.tag == "Takuan") {
             Enemy enemy = col.GetComponent<Enemy>();
-            enemy.Damege();
-            base.Delete();
+            enemy.Damege(5);
+            Delete();
+        } else if (col.tag == "Boss") {
+            Boss boss = col.GetComponent<Boss>();
+            boss.Damege(5);
+            Delete();
+        } else if (col.tag == "Stage") {
+            Delete();
+        } else if (col.tag == "EnemyBullet") {
+            Delete();
         }
     }
 }

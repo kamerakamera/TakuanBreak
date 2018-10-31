@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour {
     protected AudioSource takuanSoundEffect;
     public AudioClip takuanDamegeSoundEffect;
     public StageManeger stageManeger;
+    public bool IsRendered { get; set; }
 	// Use this for initialization
 	protected virtual void Start () {
         rb = GetComponent<Rigidbody>();
@@ -70,7 +71,7 @@ public class Enemy : MonoBehaviour {
         takuanSoundEffect.Play();
         DestroyObject();
         stageManeger.AddScore();
-        if (stageManeger.GetScore() % 3.0f == 0) {
+        if (stageManeger.GetScore() % 100.0f == 0) {
             stageManeger.StartBossStage();
         } else {
             stageManeger.Search();
@@ -80,7 +81,15 @@ public class Enemy : MonoBehaviour {
     public void DestroyObject() {
         Destroy(this.gameObject);
         Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
-    } 
+    }
+
+    private void OnBecameVisible() {
+        IsRendered = true;
+    }
+
+    private void OnBecameInvisible() {
+        IsRendered = false;
+    }
 
     protected virtual void OnCollisionStay(Collision collision) {
         if (collision.collider.tag == "Player") {

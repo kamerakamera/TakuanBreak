@@ -341,14 +341,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startHp: 3
   Bullet: {fileID: 1726045170823306, guid: 4ef242e292c5934429ff954d61c5aae2, type: 2}
+  homingBulletPrefab: {fileID: 1671157721902008, guid: 3db105816cab452478bd5621b3a5e3e2,
+    type: 2}
   mainCamera: {fileID: 20445611723011470}
   mousePosition: {x: 0, y: 0, z: 0}
   avoidInterval: 0.1
   avoidCoolTime: 0.5
+  lockOnShotCoolTime: 10
+  lockOnShotCoolTimeCount: 0
   isInvincible: 0
   damegeFlash: {fileID: 0}
   shotSoundEffect: {fileID: 8300000, guid: e2accbc5a60d7d74fa4638e74f788ff6, type: 3}
   damegeSoundEffect: {fileID: 8300000, guid: eeb45d1b1d0385f44986dd3665303d74, type: 3}
+  lockOnTargetObj: []
 --- !u!124 &124681586895200034
 Behaviour:
   m_ObjectHideFlags: 1

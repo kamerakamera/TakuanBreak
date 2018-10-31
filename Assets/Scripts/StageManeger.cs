@@ -51,7 +51,6 @@ public class StageManeger : MonoBehaviour {
 
     public void AddScore() {
         score++;
-        //Debug.Log(score);
     }
 
     public float GetScore() {
