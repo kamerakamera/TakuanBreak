@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 enum BossState {
-    wait,shotBullet,destruct,summons,bodyRush,backStartPos
+    wait,shotBullet,shotCreateFieldBullet,destruct,summons,bodyRush,backStartPos
 }
 
 public class Boss : Enemy {
     public GameObject detonator,selfDestructEffect;
     public float selfDestructHP = 10;
-    private float selfDestructTime = 10,selfDestructCount;
+    private float selfDestructTime = 7,selfDestructCount;
     Material takuanMaterial;
     Color changeColor;
     Vector3 playerDirection;
     float playerDistance;
     [SerializeField]
-    GameObject bulletPrefab,destructParticlePrefab;
+    GameObject bulletPrefab,destructParticlePrefab,createFieldBulletPrefab,lowSpeedFieldPrefab,minionPrefab;
     GameObject destructParticle;
     BossState IsState { get; set; }
     [SerializeField]
-    float remainingBullet,shotIntervalTime;
+    float remainingBullet,shotIntervalTime,remainingCreateFieldBullet,createNum;
     [SerializeField]
-    float shotSpeed, bodyRushSpeed,waitInterval;
-    float shotCount,shotIntervalCount,waitIntervalCount;
-    bool isShot,isStartDestruct,isDestruct,isWait,isAvoid;
+    float shotSpeed, bodyRushSpeed,waitInterval,createMinionInterval;
+    float shotCount,shotIntervalCount,waitIntervalCount,createMinionIntervalCount;
+    bool isShot,isStartDestruct,isDestruct,isWait,isAvoid,isMinionCreate;
     Vector3 firstPosition;
 
     // Use this for initialization
@@ -52,6 +52,10 @@ public class Boss : Enemy {
             shotCount = 0;
             isShot = false;
         }
+        if(stateName == BossState.shotCreateFieldBullet) {
+            shotCount = 0;
+            isShot = false;
+        }
         if(stateName == BossState.bodyRush) {
             GetPlayerDirection();
         }
@@ -70,10 +74,18 @@ public class Boss : Enemy {
                     isDestruct = true;
                     ChengeState(BossState.destruct);
                 } else {
-                    if (playerDistance <= 8) {
+                    if (playerDistance <= 6) {
                         ChengeState(BossState.bodyRush);
                     } else {
-                        ChengeState(BossState.shotBullet);
+                        if(Random.Range(1,4) == 1) {
+                            ChengeState(BossState.shotCreateFieldBullet);
+                        } else {
+                            if (Random.Range(1, 5) == 1) {
+                                ChengeState(BossState.summons);
+                            } else {
+                                ChengeState(BossState.shotBullet);
+                            }
+                        }
                     }
                 }
             }
@@ -91,21 +103,33 @@ public class Boss : Enemy {
                 }
             }
         }
+        if(IsState == BossState.shotCreateFieldBullet) {
+            PlayerLook();
+            if (isShot == false) {
+                ShotDebuffBullet();
+                shotCount++;
+            } else {
+                IntervalCount(ref shotIntervalCount, shotIntervalTime, ref isShot, false);
+                if (shotCount >= remainingCreateFieldBullet) {
+                    ChengeState(BossState.wait);
+                }
+            }
+        }
         if(IsState == BossState.summons) {
             //雑魚召喚
+            CreateMinions();
         }
         if(IsState == BossState.destruct) {
             SelfDestruct();
             Spin();
         }
         if(IsState == BossState.bodyRush) {
-            rb.velocity = playerDirection * bodyRushSpeed;
-            Spin();
+            BodyBlow();
         }
         if(IsState == BossState.backStartPos) {
             PlayerLook();
             rb.velocity = (firstPosition - transform.position).normalized * bodyRushSpeed * 0.6f;
-            if(Vector3.Distance(transform.position,firstPosition) <= 0.1f) {
+            if(Vector3.Distance(transform.position,firstPosition) <= 0.2f) {
                 transform.position = firstPosition;
                 rb.velocity = Vector3.zero;
                 ChengeState(BossState.wait);
@@ -132,7 +156,6 @@ public class Boss : Enemy {
         }
         Destroy(this.gameObject);
         Instantiate(takuanDiedParticle, transform.position, Quaternion.identity);
-        stageManeger.EndBossStage();
     }
 
     void PlayerLook() {
@@ -140,11 +163,28 @@ public class Boss : Enemy {
     }
 
     void BodyBlow() {
-
+        rb.velocity = playerDirection * bodyRushSpeed;
+        Spin();
     }
 
-    void LaserAttack() {
+    void CreateMinions() {
+        Spin();
+        IntervalCount(ref createMinionInterval,createMinionIntervalCount,ref isMinionCreate,true);
+        if (isMinionCreate) {
+            for (int i = 0; i < createNum; i ++) {
+                Instantiate(minionPrefab, transform.position + new Vector3(Random.Range(-4,4),-3, Random.Range(-4, 4)), Quaternion.identity);
+            }
+            isMinionCreate = false;
+            ChengeState(BossState.wait);
+        }
+    }
 
+    void ShotDebuffBullet() {
+        GetPlayerDirection();
+        GameObject debuffBullet = Instantiate(createFieldBulletPrefab, transform.position + playerDirection * 2.0f, Quaternion.identity);
+        debuffBullet.GetComponent<Rigidbody>().velocity = playerDirection * shotSpeed;
+        debuffBullet.GetComponent<CreateFieldBullet>().SetFieldPrefab(lowSpeedFieldPrefab);
+        isShot = true;
     }
 
     void ShotExplodeBullet() {
@@ -191,8 +231,15 @@ public class Boss : Enemy {
     }
 
     protected override void OnCollisionStay(Collision collision) {
-        base.OnCollisionStay(collision);
-        if(IsState == BossState.bodyRush) {
+        if (collision.collider.tag == "Player") {
+            Player p = player.GetComponent<Player>();
+            Rigidbody playerRb = player.GetComponent<Rigidbody>();
+            if (!p.isInvincible) {
+                playerRb.velocity = new Vector3(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y, player.transform.position.z - transform.position.z).normalized * 10f;
+            }
+            p.Damege(8);
+        }
+        if (IsState == BossState.bodyRush) {
             ChengeState(BossState.backStartPos);
         }
     }

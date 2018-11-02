@@ -3,30 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BossDestructEffect : MonoBehaviour {
+    [SerializeField]
+    StageManeger stageManeger;
+    float deleteCount, deleteTime = 5;
 
 	// Use this for initialization
 	void Start () {
-		
+        stageManeger = GameObject.Find("StageManeger").GetComponent<StageManeger>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Growing();
-        ReduceColor();
-        DeleteEffect();
+        DeleteCount();
     }
 
-    void Growing() {
-        this.transform.localScale -= new Vector3(0.9f, 0.9f, 0.9f);
-    }
-
-    void ReduceColor() {
-        GetComponent<Renderer>().material.color -= new Color(0, 0, 0, 0.01f);
+    void DeleteCount() {
+        deleteCount += Time.deltaTime;
+        if(deleteCount >= deleteTime) {
+            DeleteEffect();
+        }
     }
 
     void DeleteEffect() {
-        if(this.transform.localScale.x <= 0.001f) {
-            Destroy(this.gameObject);
-        }
+        stageManeger.EndBossStage();
     }
 }

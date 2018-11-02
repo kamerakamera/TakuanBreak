@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HomingBullet : Bullet {
     public GameObject enemyObj;
+    [SerializeField]
+    private int bulletDamege;
     //public Vector3 enemyPosition;
 
 	// Use this for initialization
@@ -42,11 +44,11 @@ public class HomingBullet : Bullet {
     protected override void OnTriggerEnter(Collider col) {
         if (col.tag == "Takuan") {
             Enemy enemy = col.GetComponent<Enemy>();
-            enemy.Damege(5);
+            enemy.Damege(bulletDamege);
             Delete();
         } else if (col.tag == "Boss") {
             Boss boss = col.GetComponent<Boss>();
-            boss.Damege(5);
+            boss.Damege(bulletDamege);
             Delete();
         } else if (col.tag == "Stage") {
             Delete();

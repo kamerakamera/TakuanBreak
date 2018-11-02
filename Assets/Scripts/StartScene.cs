@@ -28,13 +28,13 @@ public class StartScene : MonoBehaviour {
             }
         }
         if(rotateSensitivity.enabled == true) {
-            if (Input.GetKeyDown(KeyCode.RightArrow) && Player.rotateSensitivityPower < 7) {
+            if (Input.GetKeyDown(KeyCode.RightArrow) && Player.rotateSensitivityPower < 6) {
                 Player.rotateSensitivityPower += 0.1f;
-                rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower;
+                rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower.ToString("F1");
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && Player.rotateSensitivityPower > 1) {
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && Player.rotateSensitivityPower > 2) {
                 Player.rotateSensitivityPower -= 0.1f;
-                rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower;
+                rotateSensitivity.text = "感度 " + Player.rotateSensitivityPower.ToString("F1");
             }
         }
         if (Input.GetKeyDown(KeyCode.Space) && !wait) {

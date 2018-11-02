@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour {
         stageManeger = GameObject.Find("StageManeger").GetComponent<StageManeger>();
         player = GameObject.Find("Player");
         takuanSoundEffect = GetComponent<AudioSource>();
-        moveSpeed = 1;
         if (hard >= 1) {
             moveSpeed += hard * 0.1f;
         }
@@ -71,7 +70,7 @@ public class Enemy : MonoBehaviour {
         takuanSoundEffect.Play();
         DestroyObject();
         stageManeger.AddScore();
-        if (stageManeger.GetScore() % 100.0f == 0) {
+        if (stageManeger.GetScore() % 40.0f == 0 && !stageManeger.isBoss) {
             stageManeger.StartBossStage();
         } else {
             stageManeger.Search();

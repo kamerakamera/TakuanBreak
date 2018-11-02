@@ -31,7 +31,7 @@ public class Explode : MonoBehaviour {
             GameObject playerObj = col.gameObject;
             Player player = playerObj.GetComponent<Player>();
             Rigidbody playerRb = player.GetComponent<Rigidbody>();
-            player.Damege(5);
+            player.Damege(3);
             playerRb.velocity = new Vector3(playerObj.transform.position.x - transform.position.x, playerObj.transform.position.y - transform.position.y, playerObj.transform.position.z - transform.position.z).normalized * 10f;
             explodeCollider.enabled = false;
         }

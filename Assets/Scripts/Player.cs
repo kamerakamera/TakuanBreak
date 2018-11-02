@@ -17,15 +17,16 @@ public class Player : MonoBehaviour {
     public static float rotateSensitivityPower = 4;
     [SerializeField]
     float avoidInterval,avoidCoolTime;
-    float jumpCoolTime = 0,knockBackTime = 0,invincibleCoolTime = 0,avoidIntervalCount,avoidCoolTimeCount,lockOnCount,lockOnTime = 1;
+    float knockBackTime = 0,invincibleCoolTime = 0,avoidIntervalCount,avoidCoolTimeCount,lockOnCount,lockOnTime = 1,deathCount;
     public float lockOnShotCoolTime, lockOnShotCoolTimeCount;
     RaycastHit hit;
-    bool isJump, isKnockBack, isAvoid, avoidAble, lockOnShotAble, avoidInput, lockOnInput, startLockOn, isLaunchPreparation, completeLockOn;
+    bool isKnockBack, isAvoid, avoidAble, lockOnShotAble, avoidInput, lockOnInput, startLockOn, isLaunchPreparation, completeLockOn;
     Vector3 moveDirection;
     bool front,back,right,left,up;
     int straight, side,lockOnTargetRemoveCount;
-    public bool isInvincible,isCreateTargetSite;
-    float movePower;
+    public bool isInvincible,isCreateTargetSite,isDeath;
+    public float MovePower { get; set; }
+    public float StartMovePower { get; set; }
     public Image damegeFlash;
     AudioSource soundEffect;
     public AudioClip shotSoundEffect;
@@ -42,7 +43,8 @@ public class Player : MonoBehaviour {
         Hp = startHp;
         rb = GetComponent<Rigidbody>();
         soundEffect = GetComponent<AudioSource>();
-        movePower = 3;
+        MovePower = 3;
+        StartMovePower = MovePower;
         damegeFlash.enabled = false;
         avoidAble = true;
         isAvoid = false;
@@ -51,25 +53,34 @@ public class Player : MonoBehaviour {
         isLaunchPreparation = false;
         startLockOn = false;
         LockOntargetView.SetActive(false);
+        isDeath =false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0)) {
-            Shot();
+        if (isDeath) {
+            Death();
         }
-        MoveInput();
-        AvoidInput();
-        if (lockOnShotAble) {
-            LockOnInput();
+        if (!isDeath) {
+            if (Input.GetMouseButtonDown(0) && !isLaunchPreparation) {
+                Shot();
+            }
+            MoveInput();
+            AvoidInput();
+            if (lockOnShotAble) {
+                LockOnInput();
+            }
         }
+        
     }
 
     void FixedUpdate() {
         if (!lockOnShotAble) {
             IntervalCount(ref lockOnShotCoolTimeCount, lockOnShotCoolTime, ref lockOnShotAble, true);
         }
-        LookAround();
+        if (!isDeath) {
+            LookAround();
+        }
         if (!isLaunchPreparation) {
             if (avoidInput && avoidAble && !isAvoid) {
                 Avoid();
@@ -178,19 +189,7 @@ public class Player : MonoBehaviour {
     void Move() {
         if (!isKnockBack) {
             moveDirection = new Vector3(transform.forward.x * straight + transform.right.x * side,rb.velocity.y,transform.forward.z * straight + transform.right.z * side).normalized;
-            rb.velocity = new Vector3(moveDirection.x * movePower, rb.velocity.y, moveDirection.z * movePower);
-
-            if (up && isJump == false) {
-                rb.velocity = new Vector3(rb.velocity.x, 5f, rb.velocity.z);
-                isJump = true;
-            }
-            if (isJump) {
-                jumpCoolTime += Time.fixedDeltaTime;
-                if (jumpCoolTime >= 10) {
-                    jumpCoolTime = 0;
-                    isJump = false;
-                }
-            }
+            rb.velocity = new Vector3(moveDirection.x * MovePower, rb.velocity.y, moveDirection.z * MovePower);
         }
     }
 
@@ -208,7 +207,7 @@ public class Player : MonoBehaviour {
             straight = -1;
         }
         moveDirection = new Vector3(transform.forward.x * straight + transform.right.x * side, rb.velocity.y, transform.forward.z * straight + transform.right.z * side).normalized;
-        rb.velocity = new Vector3(moveDirection.x * movePower * 8.0f, rb.velocity.y, moveDirection.z * movePower * 8.0f);
+        rb.velocity = new Vector3(moveDirection.x * MovePower * 8.0f, rb.velocity.y, moveDirection.z * MovePower * 8.0f);
     }
 
     void IntervalCount(ref float count, float intervalTime, ref bool isTrigger, bool setBool) {
@@ -297,7 +296,7 @@ public class Player : MonoBehaviour {
                 ResetLockOnBool();
             }
             if (Hp <= 0) {
-                Death();
+                isDeath = true;
             }
         }
     }
@@ -310,6 +309,11 @@ public class Player : MonoBehaviour {
     void Death() {
         //SceneManager.LoadScene("End");
         //カメラ吹き飛ばし処理して時間経過でSceneとばそうぜ
+        mainCamera.transform.parent = null;
+        mainCamera.transform.position += new Vector3(0,1.0f * Time.deltaTime,0);
+        deathCount += Time.deltaTime;
+        if(deathCount >= 3) {
+            SceneManager.LoadScene("GameOver");
+        }
     }
-
 }

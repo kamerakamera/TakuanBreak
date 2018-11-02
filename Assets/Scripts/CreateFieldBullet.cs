@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour {
-    [SerializeField]
-    Rigidbody rb;
-    [SerializeField]
-    GameObject explodePrefab;
+public class CreateFieldBullet : MonoBehaviour {
+    GameObject fieldPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -18,11 +15,14 @@ public class EnemyBullet : MonoBehaviour {
 		
 	}
 
+    public void SetFieldPrefab(GameObject setField) {
+        fieldPrefab = setField;
+    }
+
     private void OnTriggerEnter(Collider other) {
-        if(other.tag != "Takuan" && other.tag != "Boss" && other.tag != "Field") {
-            Instantiate(explodePrefab, transform.position, Quaternion.identity);
+        if(other.tag == "Stage") {
+            Instantiate(fieldPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
-        
     }
 }

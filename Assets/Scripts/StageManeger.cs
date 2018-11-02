@@ -9,8 +9,10 @@ public class StageManeger : MonoBehaviour {
     public GameObject player,takuanPrefab;
     float createPositionX, createPositionZ;
     float createNumber,prohibitedArea = 1;
-    public bool isBoss;
+    public bool isBoss,isDestroy;
     public static float score = 0;
+    [SerializeField]
+    GameSceneManeger gameSceneManeger;
     // Use this for initialization
     void Start () {
         takuan = GameObject.FindGameObjectsWithTag("Takuan");
@@ -21,7 +23,9 @@ public class StageManeger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        if(!isDestroy && isBoss) {
+            DestroyAllTakuan();
+        }
     }
 
     private void FixedUpdate() {
@@ -42,7 +46,7 @@ public class StageManeger : MonoBehaviour {
             TakuanCreate();
         }
 
-        if (score % 10 == 0) {
+        if (score % 5 == 0) {
             Enemy.hard++;
             Debug.Log("speedUp");
         }
@@ -70,15 +74,20 @@ public class StageManeger : MonoBehaviour {
 
     public void StartBossStage() {
         nowBossTakuan = Instantiate(bossTakuan, new Vector3(0, 5.28f, 0), Quaternion.identity);
+        isBoss = true;
+    }
+
+    void DestroyAllTakuan() {
         foreach (GameObject gameobj in takuan) {
             if (gameobj == null) continue;
             gameobj.gameObject.GetComponent<Enemy>().DestroyObject();
         }
-        isBoss = true;
+        isDestroy = true;
     }
 
     public void EndBossStage() {
-        Search();
-        isBoss = false;
+        //Search();
+        //isBoss = false;
+        gameSceneManeger.ClearGame();
     }
 }
