@@ -31,6 +31,7 @@ public class Player : MonoBehaviour {
     AudioSource soundEffect;
     public AudioClip shotSoundEffect;
     public AudioClip damegeSoundEffect;
+    public AudioClip lockOnShotSound;
     public List<GameObject> lockOnTargetObj;
     [SerializeField]
     UIManeger uiManeger;
@@ -263,7 +264,9 @@ public class Player : MonoBehaviour {
     }
 
     void LockOnTarget() {
-        foreach(GameObject checkObj in GameObject.FindGameObjectsWithTag("Takuan")) {
+        soundEffect.clip = lockOnShotSound;
+        soundEffect.Play();
+        foreach (GameObject checkObj in GameObject.FindGameObjectsWithTag("Takuan")) {
             if (checkObj.GetComponent<Enemy>().IsRendered) {
                 lockOnTargetObj.Add(checkObj);
             }
@@ -276,6 +279,8 @@ public class Player : MonoBehaviour {
     }
 
     void ShotHomingBullet(int bulletNum) {
+        soundEffect.clip = shotSoundEffect;
+        soundEffect.Play();
         isShotHomingBullet = Instantiate(homingBulletPrefab,transform.position,Quaternion.identity);
         if (lockOnTargetObj[bulletNum] != null) {
             isShotHomingBullet.GetComponent<HomingBullet>().SetTargetEnemy(lockOnTargetObj[bulletNum]);

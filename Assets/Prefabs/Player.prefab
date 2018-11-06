@@ -350,10 +350,15 @@ MonoBehaviour:
   lockOnShotCoolTime: 10
   lockOnShotCoolTimeCount: 0
   isInvincible: 0
+  isCreateTargetSite: 0
+  isDeath: 0
   damegeFlash: {fileID: 0}
   shotSoundEffect: {fileID: 8300000, guid: e2accbc5a60d7d74fa4638e74f788ff6, type: 3}
   damegeSoundEffect: {fileID: 8300000, guid: eeb45d1b1d0385f44986dd3665303d74, type: 3}
+  lockOnShotSound: {fileID: 8300000, guid: 3bc54aea3b0c5ae43987e34054470602, type: 3}
   lockOnTargetObj: []
+  uiManeger: {fileID: 0}
+  LockOntargetView: {fileID: 0}
 --- !u!124 &124681586895200034
 Behaviour:
   m_ObjectHideFlags: 1

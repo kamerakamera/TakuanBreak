@@ -10,7 +10,7 @@ public class MinionEnemy : Enemy {
     // Update is called once per frame
     protected override void Start() {
         base.Start();
-        moveSpeed = 7;
+        moveSpeed = 5.0f;
     }
 
     void Update () {
